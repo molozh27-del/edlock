@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Едлок — Домашняя еда на услуги</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -108,6 +111,11 @@ footer p{font-size:0.85rem}
 .emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .emoji-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .emoji-btn:hover,.emoji-btn.selected{border-color:var(--green);background:var(--green-light)}
+.compact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.compact-item{padding:8px;background:var(--bg);border-radius:10px;text-align:center;font-size:0.8rem;cursor:pointer;border:2px solid transparent;transition:all .2s}
+.compact-item:hover{border-color:var(--green)}
+.compact-item.selected{border-color:var(--green);background:var(--green-light)}
+.compact-item .icon{font-size:1.5rem;margin-bottom:4px;display:block}
 .board-card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid var(--border)}
 .board-card h4{font-size:1rem;margin-bottom:4px}
 .board-card .meta{color:var(--muted);font-size:0.8rem;margin-bottom:8px}
@@ -269,11 +277,12 @@ footer p{font-size:0.85rem}
 <div class="modal-overlay" id="cartModal" onclick="if(event.target===this)closeCart()"><div class="modal"><div class="modal-header"><h2>🛒 Корзина</h2><button class="modal-close" onclick="closeCart()">✕</button></div><div class="modal-body" id="cartBody"></div></div></div>
 <div class="modal-overlay" id="addDishModal" onclick="if(event.target===this)closeAddDish()"><div class="modal"><div class="modal-header"><h2>➕ Добавить блюдо</h2><button class="modal-close" onclick="closeAddDish()">✕</button></div><div class="modal-body"><form onsubmit="saveDish(event)"><div class="form-group"><label>Название</label><input id="dName" required></div><div class="form-group"><label>Описание</label><input id="dDesc" required></div><div class="form-group"><label>Категория</label><select id="dCat" required></select></div><div class="form-group"><label>Эмодзи</label><input id="dIcon" value="🍽️" maxlength="2"><div class="emoji-grid" id="dishEmojis"></div></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
 <div class="modal-overlay" id="addServiceModal" onclick="if(event.target===this)closeAddService()"><div class="modal"><div class="modal-header"><h2>➕ Добавить услугу</h2><button class="modal-close" onclick="closeAddService()">✕</button></div><div class="modal-body"><form onsubmit="saveService(event)"><div class="form-group"><label>Название</label><input id="sName" required></div><div class="form-group"><label>Описание</label><input id="sDesc" required></div><div class="form-group"><label>Примерное время</label><input id="sValue" placeholder="≈ 30 мин" required></div><div class="form-group"><label>Эмодзи</label><input id="sIcon" value="✨" maxlength="2"><div class="emoji-grid" id="svcEmojis"></div></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
-<div class="modal-overlay" id="addListingModal" onclick="if(event.target===this)closeAddListing()"><div class="modal"><div class="modal-header"><h2>➕ Добавить предложение</h2><button class="modal-close" onclick="closeAddListing()">✕</button></div><div class="modal-body"><form onsubmit="saveListing(event)"><div class="form-group"><label>Заголовок</label><input id="lTitle" required></div><div class="form-group"><label>Описание</label><textarea id="lDesc" required></textarea></div><div class="form-group"><label>Твоё имя</label><input id="lAuthor" required></div><div class="form-group"><label>Контакт</label><input id="lContact" placeholder="+380..." required></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
+<div class="modal-overlay" id="addListingModal" onclick="if(event.target===this)closeAddListing()"><div class="modal modal-wide"><div class="modal-header"><h2>➕ Добавить предложение</h2><button class="modal-close" onclick="closeAddListing()">✕</button></div><div class="modal-body"><form onsubmit="saveListing(event)"><div class="form-group"><label>🍲 Выбери блюда</label><div class="compact-grid" id="listingDishGrid"></div><div id="listingDishTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><div class="form-group"><label>🧹 Выбери услуги</label><div class="compact-grid" id="listingSvcGrid"></div><div id="listingSvcTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><div class="form-group"><label>Комментарий</label><textarea id="lComment" placeholder="Детали, адрес, время..."></textarea></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
 <div class="modal-overlay" id="replyModal" onclick="if(event.target===this)closeReply()"><div class="modal"><div class="modal-header"><h2>💬 Ответить на предложение</h2><button class="modal-close" onclick="closeReply()">✕</button></div><div class="modal-body"><form onsubmit="saveReply(event)"><div class="form-group"><label>Твоё имя</label><input id="rAuthor" required></div><div class="form-group"><label>Твой контакт</label><input id="rContact" placeholder="+380..." required></div><div class="form-group"><label>Тип ответа</label><div class="checkbox"><input type="radio" name="rType" value="accept" id="rAccept" checked onchange="toggleReplyType()"><label for="rAccept">✅ Согласен на условия автора</label></div><div class="checkbox"><input type="radio" name="rType" value="counter" id="rCounter" onchange="toggleReplyType()"><label for="rCounter">🔄 Предлагаю встречное (своё блюдо или услугу)</label></div></div><div class="form-group" id="counterWrap" style="display:none"><label>Что ты предлагаешь взамен?</label><textarea id="rCounterOffer" placeholder="Например: Я могу убрать квартиру..."></textarea></div><div class="form-group"><label>Сообщение</label><textarea id="rMsg" placeholder="Например: Я готов обменять! Когда удобно?" required></textarea></div><button class="btn btn-primary submit-btn">Отправить ответ</button></form></div></div></div>
 <div class="modal-overlay" id="authModal" onclick="if(event.target===this)closeAuth()"><div class="modal"><div class="modal-header"><h2>🔑 Вход / Регистрация</h2><button class="modal-close" onclick="closeAuth()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchAuth('login',this)">Вход</button><button class="tab" onclick="switchAuth('register',this)">Регистрация</button></div><form id="loginForm" onsubmit="doLogin(event)"><div class="form-group"><label>Телефон</label><input id="loginPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="loginPass" required></div><button class="btn btn-primary submit-btn">Войти</button></form><form id="regForm" onsubmit="doRegister(event)" style="display:none"><div class="form-group"><label>Имя</label><input id="regName" required></div><div class="form-group"><label>Телефон</label><input id="regPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="regPass" required><small style="color:var(--muted);font-size:0.8rem">Минимум 6 символов, заглавная буква и цифра</small></div><button class="btn btn-primary submit-btn">Зарегистрироваться</button></form></div></div></div>
-<div class="modal-overlay" id="friendsModal" onclick="if(event.target===this)closeFriends()"><div class="modal modal-wide"><div class="modal-header"><h2>👥 Друзья и предложения</h2><button class="modal-close" onclick="closeFriends()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchFriendTab('friends',this)">👥 Друзья</button><button class="tab" onclick="switchFriendTab('incoming',this)">📩 Входящие <span id="incomingBadge"></span></button><button class="tab" onclick="switchFriendTab('outgoing',this)">📤 Исходящие</button></div><div id="friendTabContent"><div id="friendsPane"><div class="form-group"><input id="friendSearch" placeholder="🔍 Поиск по имени..." oninput="renderFriends()"></div><div id="friendsList"></div></div><div id="incomingPane" style="display:none"></div><div id="outgoingPane" style="display:none"></div></div></div></div></div>
-<div class="modal-overlay" id="sendOfferModal" onclick="if(event.target===this)closeSendOffer()"><div class="modal"><div class="modal-header"><h2>📩 Предложить обмен</h2><button class="modal-close" onclick="closeSendOffer()">✕</button></div><div class="modal-body"><form onsubmit="saveOffer(event)"><div class="form-group"><label>Кому</label><input id="offerToName" readonly style="background:#eee"></div><div class="form-group"><label>Что ты предлагаешь?</label><textarea id="offerWhat" placeholder="Например: Приготовлю домашний борщ с пюре..." required></textarea></div><div class="form-group"><label>Что хочешь получить взамен?</label><textarea id="offerFor" placeholder="Например: Уборка квартиры или помыть посуду..." required></textarea></div><div class="form-group"><label>Твой контакт</label><input id="offerContact" readonly style="background:#eee"></div><button class="btn btn-primary submit-btn">📩 Отправить предложение</button></form></div></div></div>
+<div class="modal-overlay" id="friendsModal" onclick="if(event.target===this)closeFriends()"><div class="modal modal-wide"><div class="modal-header"><h2>👥 Друзья и предложения</h2><button class="modal-close" onclick="closeFriends()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchFriendTab('friends',this)">👥 Друзья</button><button class="tab" onclick="switchFriendTab('requests',this)">📨 Запросы <span id="requestBadge"></span></button><button class="tab" onclick="switchFriendTab('incoming',this)">📩 Входящие <span id="incomingBadge"></span></button><button class="tab" onclick="switchFriendTab('outgoing',this)">📤 Исходящие</button></div><div id="friendTabContent"><div id="friendsPane"><div class="form-group"><input id="friendSearch" placeholder="🔍 Поиск по имени..." oninput="renderFriends()"></div><div id="friendsList"></div></div><div id="requestsPane" style="display:none"></div><div id="incomingPane" style="display:none"></div><div id="outgoingPane" style="display:none"></div></div></div></div></div>
+<div class="modal-overlay" id="sendOfferModal" onclick="if(event.target===this)closeSendOffer()"><div class="modal modal-wide"><div class="modal-header"><h2>📩 Предложить обмен</h2><button class="modal-close" onclick="closeSendOffer()">✕</button></div><div class="modal-body"><form onsubmit="saveOffer(event)"><div class="form-group"><label>Кому</label><input id="offerToName" readonly style="background:#eee"></div><div class="form-group"><label>🍲 Что ты предлагаешь?</label><div class="compact-grid" id="offerDishGrid"></div><div id="offerDishTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><div class="form-group"><label>🧹 Или услуги</label><div class="compact-grid" id="offerSvcGrid"></div><div id="offerSvcTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><button class="btn btn-primary submit-btn">📩 Отправить предложение</button></form></div></div></div>
+<div class="modal-overlay" id="counterOfferModal" onclick="if(event.target===this)closeCounterOffer()"><div class="modal modal-wide"><div class="modal-header"><h2>🔄 Предложить взамен</h2><button class="modal-close" onclick="closeCounterOffer()">✕</button></div><div class="modal-body"><div class="form-group"><label>🍲 Выбери блюда</label><div class="compact-grid" id="counterDishGrid"></div><div id="counterDishTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><div class="form-group"><label>🧹 Выбери услуги</label><div class="compact-grid" id="counterSvcGrid"></div><div id="counterSvcTags" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div></div><button class="btn btn-primary submit-btn" onclick="saveCounterOffer()">🔄 Отправить встречное</button></div></div></div>
 <div class="modal-overlay" id="chatModal" onclick="if(event.target===this)closeChat()"><div class="modal modal-wide"><div class="modal-header"><h2 id="chatTitle">💬 Чат</h2><button class="modal-close" onclick="closeChat()">✕</button></div><div class="modal-body"><div class="chat-messages" id="chatMessages"></div><div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap"><button class="btn btn-secondary btn-sm" onclick="sendLocation()">📍 Геолокация</button><button class="btn btn-secondary btn-sm" onclick="$('chatFile').click()">📎 Фото</button><input type="file" id="chatFile" accept="image/*" style="display:none" onchange="handlePhoto(this)"></div><div class="chat-input"><input type="text" id="chatInput" placeholder="Написать сообщение..." onkeypress="if(event.key==='Enter')sendMessage()"><button class="btn btn-primary" onclick="sendMessage()">➤</button></div></div></div></div>
 
 <div class="toast" id="toast"></div>
@@ -304,12 +313,19 @@ let selectedSvc=null;
 let orders=[];
 let listings=[];
 let friends=[];
+let friendRequests=[];
 let activeChatId=null;
+let listingDishes=[];
+let listingSvcs=[];
+let offerItems=[];
+let counterOfferId=null;
+let counterItems=[];
 
 const DB='https://edlock-5a554-default-rtdb.firebaseio.com';
 async function dbGet(path){try{const r=await fetch(DB+path+'.json');const d=await r.json();return d;}catch(e){console.error(e);return null;}}
 async function dbPost(path,data){try{const r=await fetch(DB+path+'.json',{method:'POST',body:JSON.stringify(data)});return await r.json();}catch(e){console.error(e);return null;}}
 async function dbPatch(path,data){try{const r=await fetch(DB+path+'.json',{method:'PATCH',body:JSON.stringify(data)});return await r.json();}catch(e){console.error(e);return null;}}
+async function dbPut(path,data){try{const r=await fetch(DB+path+'.json',{method:'PUT',body:JSON.stringify(data)});return await r.json();}catch(e){console.error(e);return null;}}
 
 async function loadOrders(){
   const data=await dbGet('/orders');
@@ -324,8 +340,13 @@ async function loadListings(){
 async function loadFriends(){
   if(!user||!user.phone)return;
   const data=await dbGet('/friends/'+user.phone);
-  friends=data?Object.keys(data).map(k=>({id:k,...data[k]})):[];
+  friends=data?Object.keys(data).map(k=>({id:k,...data[k]})).filter(f=>!f.deleted):[];
+  const req=await dbGet('/friendRequests/'+user.phone);
+  friendRequests=req?Object.keys(req).map(k=>({id:k,...req[k]})).filter(r=>r.status==='pending'):[];
+  const badge=$('requestBadge');
+  if(badge)badge.textContent=friendRequests.length?'('+friendRequests.length+')':'';
   renderFriends();
+  if($('requestsPane')&&$('requestsPane').style.display!=='none')renderFriendRequests();
 }
 async function loadChat(){
   if(!activeChatId)return;
@@ -333,7 +354,7 @@ async function loadChat(){
   const msgs=data?Object.keys(data).map(k=>({id:k,...data[k]})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0)):[];
   renderChatMessages(msgs);
 }
-setInterval(()=>{loadOrders();loadListings();if(activeChatId)loadChat();if(user)loadPrivateOffers();},2000);
+setInterval(()=>{loadOrders();loadListings();if(activeChatId)loadChat();if(user){loadPrivateOffers();loadFriends();}},2000);
 
 const dishes=[...defaultDishes,...customDishes];
 const services=[...defaultServices,...customServices];
@@ -350,7 +371,7 @@ function updateUserUI(){
   $('mobAuthBtn').textContent=user?'👋 '+n:'Войти';
   $('friendsBtn').style.display=user?'inline-flex':'none';
   $('mobFriendsBtn').style.display=user?'block':'none';
-  if(user){$('oName').value=n;}
+  if(user){$('oName').value=n;$('oPhone').value=user.phone||'';$('lAuthor').value=n;$('lContact').value=user.phone||'';$('rAuthor').value=n;$('rContact').value=user.phone||'';}
 }
 
 function openAuth(){$('authModal').classList.add('active')}
@@ -399,7 +420,7 @@ function goToOrder(){$('oDishes').value=cart.map(i=>i.name+' ('+i.qty+' порц
 
 function toggleSvc2(){$('svc2Wrap').style.display=$('oWholeDay').checked?'block':'none';}
 
-async function submitOrder(e){e.preventDefault();const wd=$('oWholeDay').checked;const s1=$('oSvc1').value;const s2=$('oSvc2').value;const order={name:$('oName').value,phone:$('oPhone').value,type:$('oType').value==='cook'?'Готовлю':'Ищу',dishes:$('oDishes').value,service:s1+(wd&&s2?' + '+s2:''),comment:$('oComment').value,wholeDay:wd,date:new Date().toLocaleString('ru-RU'),acceptedBy:[]};await dbPost('/orders',order);loadOrders();document.querySelector('#order form').reset();$('svc2Wrap').style.display='none';cart=[];saveCart();updateCartUI();selectedSvc=null;renderServices();toast('✅ Предложение опубликовано!');$('orders').scrollIntoView({behavior:'smooth'});}
+async function submitOrder(e){e.preventDefault();if(!user){toast('Войди, чтобы опубликовать');openAuth();return;}const wd=$('oWholeDay').checked;const s1=$('oSvc1').value;const s2=$('oSvc2').value;const order={name:$('oName').value,phone:$('oPhone').value,type:$('oType').value==='cook'?'Готовлю':'Ищу',dishes:$('oDishes').value,service:s1+(wd&&s2?' + '+s2:''),comment:$('oComment').value,wholeDay:wd,date:new Date().toLocaleString('ru-RU'),acceptedBy:[]};await dbPost('/orders',order);loadOrders();document.querySelector('#order form').reset();$('svc2Wrap').style.display='none';cart=[];saveCart();updateCartUI();selectedSvc=null;renderServices();toast('✅ Предложение опубликовано!');$('orders').scrollIntoView({behavior:'smooth'});}
 
 function renderOrders(){
   const l=$('ordersList');
@@ -446,19 +467,30 @@ function renderBoard(){
     const repArr=Object.keys(reps).map(k=>({id:k,...reps[k]}));
     const hasAccepted=repArr.some(r=>r.status==='accepted');
     const showReplyBtn=i.status!=='accepted'&&!hasAccepted;
-    const isAuthor=user&&user.phone===i.contact;
-    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>${i.title}</h4>${getStatusBadge(i)}</div><div class="meta">👤 ${i.author} · 📞 ${i.contact}</div><p>${i.description}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${showReplyBtn?`<button class="btn btn-secondary btn-sm" onclick="openReply('${i.id}')">🔄 Отправить встречное</button>`:''}${i.status==='accepted'?`<button class="btn btn-secondary btn-sm" onclick="cancelAcceptance('${i.id}')">↩️ Отменить согласие</button>`:''}${user&&user.phone!==i.contact?`<button class="btn btn-secondary btn-sm" onclick="addFriendFromListing('${i.contact}','${i.author}')">👥 В друзья</button><button class="btn btn-secondary btn-sm" onclick="openChat('${i.contact}','${i.author}')">💬 Написать</button>`:''}</div>${repArr.length?`<div style="margin-top:10px"><strong style="font-size:0.9rem">Ответы (${repArr.length}):</strong>${repArr.map(r=>`<div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:10px;font-size:0.9rem"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><strong>👤 ${r.author}</strong>${r.status==='accepted'?'<span class="status-accepted" style="font-size:0.7rem">Принято</span>':r.status==='declined'?'<span style="font-size:0.7rem;color:#999">Отклонено</span>':''}</div><div style="font-size:0.8rem;color:var(--muted);margin-bottom:4px">📞 ${r.contact||'-'} · ${r.date}</div>${r.offerType==='counter'?`<div style="background:#fff;padding:6px 10px;border-radius:8px;margin:6px 0;border-left:3px solid var(--orange)"><strong>🔄 Встречное:</strong> ${r.counterOffer||'-'}</div>`:''}<p>${r.message}</p><div style="display:flex;gap:8px;margin-top:8px">${r.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="acceptReply('${i.id}','${r.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declineReply('${i.id}','${r.id}')">❌ Отклонить</button>`:''}</div></div>`).join('')}</div>`:''}</div>`;
+    const dishTags=(i.dishes||[]).map(d=>'<span class="order-tag">🍽️ '+d+'</span>').join('');
+    const svcTags=(i.service||[]).map(s=>'<span class="order-tag">🧹 '+s+'</span>').join('');
+    const fr=friends.find(f=>f.phone===i.contact);
+    const friendBtn=fr?`<button class="btn btn-secondary btn-sm" onclick="removeFriendFromBoard('${i.contact}')">🗑️ Удалить из друзей</button>`:`<button class="btn btn-secondary btn-sm" onclick="addFriendFromListing('${i.contact}','${i.author}')">👥 В друзья</button>`;
+    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>${activeBoard==='dish'?'🍲 Блюда':'🧹 Услуги'}</h4>${getStatusBadge(i)}</div><div class="meta">👤 ${i.author} · 📞 ${i.contact}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0">${dishTags}${svcTags}</div>${i.comment?`<p>${i.comment}</p>`:''}<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${showReplyBtn?`<button class="btn btn-secondary btn-sm" onclick="openReply('${i.id}')">🔄 Отправить встречное</button>`:''}${i.status==='accepted'?`<button class="btn btn-secondary btn-sm" onclick="cancelAcceptance('${i.id}')">↩️ Отменить согласие</button>`:''}${user&&user.phone!==i.contact?`${friendBtn}<button class="btn btn-secondary btn-sm" onclick="openChat('${i.contact}','${i.author}')">💬 Написать</button>`:''}</div>${repArr.length?`<div style="margin-top:10px"><strong style="font-size:0.9rem">Ответы (${repArr.length}):</strong>${repArr.map(r=>`<div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:10px;font-size:0.9rem"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><strong>👤 ${r.author}</strong>${r.status==='accepted'?'<span class="status-accepted" style="font-size:0.7rem">Принято</span>':r.status==='declined'?'<span style="font-size:0.7rem;color:#999">Отклонено</span>':''}</div><div style="font-size:0.8rem;color:var(--muted);margin-bottom:4px">📞 ${r.contact||'-'} · ${r.date}</div>${r.offerType==='counter'?`<div style="background:#fff;padding:6px 10px;border-radius:8px;margin:6px 0;border-left:3px solid var(--orange)"><strong>🔄 Встречное:</strong> ${r.counterOffer||'-'}</div>`:''}<p>${r.message}</p><div style="display:flex;gap:8px;margin-top:8px">${r.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="acceptReply('${i.id}','${r.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declineReply('${i.id}','${r.id}')">❌ Отклонить</button></div>`:''}</div>`).join('')}</div>`:''}</div>`;
   }).join('');
 }
 
-function openAddListing(){$('addListingModal').classList.add('active')}
+function openAddListing(){listingDishes=[];listingSvcs=[];renderListingPicker();$('addListingModal').classList.add('active');}
 function closeAddListing(){$('addListingModal').classList.remove('active')}
-async function saveListing(e){e.preventDefault();const l={type:activeBoard,title:$('lTitle').value,description:$('lDesc').value,author:$('lAuthor').value,contact:$('lContact').value,date:new Date().toLocaleString('ru-RU'),status:'new'};await dbPost('/listings',l);loadListings();closeAddListing();toast('Предложение добавлено!');}
+async function saveListing(e){e.preventDefault();if(!user){toast('Войди, чтобы добавить');openAuth();return;}const dishNames=listingDishes.map(id=>{const d=dishes.find(x=>x.id===id);return d?d.name:'';}).filter(Boolean);const svcNames=listingSvcs.map(id=>{const s=services.find(x=>x.id===id);return s?s.name:'';}).filter(Boolean);if(!dishNames.length&&!svcNames.length){toast('Выбери хотя бы одно блюдо или услугу');return;}const l={type:activeBoard,dishes:dishNames,service:svcNames,comment:$('lComment').value,author:user.name,contact:user.phone,date:new Date().toLocaleString('ru-RU'),status:'new'};await dbPost('/listings',l);loadListings();closeAddListing();document.querySelector('#addListingModal form').reset();listingDishes=[];listingSvcs=[];renderListingPicker();toast('Предложение добавлено!');}
+function renderListingPicker(){
+  $('listingDishGrid').innerHTML=dishes.map(d=>`<div class="compact-item${listingDishes.includes(d.id)?' selected':''}" onclick="toggleListingDish(${d.id})"><span class="icon">${d.icon}</span>${d.name}</div>`).join('');
+  $('listingSvcGrid').innerHTML=services.map(s=>`<div class="compact-item${listingSvcs.includes(s.id)?' selected':''}" onclick="toggleListingSvc('${s.id}')"><span class="icon">${s.icon}</span>${s.name}</div>`).join('');
+  $('listingDishTags').innerHTML=listingDishes.map(id=>{const d=dishes.find(x=>x.id===id);return d?`<span class="order-tag">${d.icon} ${d.name}</span>`:'';}).join('');
+  $('listingSvcTags').innerHTML=listingSvcs.map(id=>{const s=services.find(x=>x.id===id);return s?`<span class="order-tag">${s.icon} ${s.name}</span>`:'';}).join('');
+}
+function toggleListingDish(id){if(listingDishes.includes(id))listingDishes=listingDishes.filter(x=>x!==id);else listingDishes.push(id);renderListingPicker();}
+function toggleListingSvc(id){if(listingSvcs.includes(id))listingSvcs=listingSvcs.filter(x=>x!==id);else listingSvcs.push(id);renderListingPicker();}
 
 function toggleReplyType(){$('counterWrap').style.display=document.querySelector('input[name="rType"]:checked').value==='counter'?'block':'none';}
-function openReply(id){replyToId=id;$('replyModal').classList.add('active');$('counterWrap').style.display='none';document.querySelector('input[name="rType"][value="accept"]').checked=true;if(user){$('rAuthor').value=user.name;}}
+function openReply(id){if(!user){toast('Войди, чтобы ответить');openAuth();return;}replyToId=id;$('replyModal').classList.add('active');$('counterWrap').style.display='none';document.querySelector('input[name="rType"][value="accept"]').checked=true;if(user){$('rAuthor').value=user.name;$('rContact').value=user.phone||'';}}
 function closeReply(){$('replyModal').classList.remove('active')}
-async function saveReply(e){e.preventDefault();const type=document.querySelector('input[name="rType"]:checked').value;const reply={author:$('rAuthor').value,contact:$('rContact').value,message:$('rMsg').value,offerType:type,counterOffer:type==='counter'?$('rCounterOffer').value:'',status:'pending',date:new Date().toLocaleString('ru-RU')};await dbPost('/listings/'+replyToId+'/replies',reply);await dbPatch('/listings/'+replyToId,{status:'pending'});loadListings();closeReply();document.querySelector('#replyModal form').reset();toggleReplyType();toast('Ответ отправлен!');}
+async function saveReply(e){e.preventDefault();if(!user){toast('Войди, чтобы отправить ответ');openAuth();return;}const type=document.querySelector('input[name="rType"]:checked').value;const reply={author:$('rAuthor').value,contact:$('rContact').value,message:$('rMsg').value,offerType:type,counterOffer:type==='counter'?$('rCounterOffer').value:'',status:'pending',date:new Date().toLocaleString('ru-RU')};await dbPost('/listings/'+replyToId+'/replies',reply);await dbPatch('/listings/'+replyToId,{status:'pending'});loadListings();closeReply();document.querySelector('#replyModal form').reset();toggleReplyType();toast('Ответ отправлен!');}
 
 async function acceptListing(id){await dbPatch('/listings/'+id,{status:'accepted'});loadListings();toast('✅ Ты согласился на предложение!');}
 async function cancelAcceptance(id){await dbPatch('/listings/'+id,{status:'new'});loadListings();toast('Согласие отменено');}
@@ -470,28 +502,51 @@ let incomingOffers=[];
 let outgoingOffers=[];
 let activeOfferTo=null;
 
+async function removeFriendFromBoard(phone){const fr=friends.find(f=>f.phone===phone);if(!fr){toast('Не найден в друзьях');return;}if(!confirm('Удалить из друзей?'))return;await dbPatch('/friends/'+user.phone+'/'+fr.id,{deleted:true});loadFriends();toast('Удалён из друзей');}
 async function addFriendFromListing(phone,name){
   if(!user){toast('Войди, чтобы добавить в друзья');openAuth();return;}
   if(phone===user.phone){toast('Это ты сам!');return;}
   const exists=friends.find(f=>f.phone===phone);
   if(exists){toast('Этот человек уже в друзьях');return;}
-  await dbPost('/friends/'+user.phone,{name:name||phone,phone:phone,addedAt:new Date().toLocaleString('ru-RU')});
-  toast('👥 Добавлен в друзья!');loadFriends();
+  const req=await dbGet('/friendRequests/'+phone);
+  const alreadySent=req?Object.values(req).some(r=>r.fromPhone===user.phone):false;
+  if(alreadySent){toast('Запрос уже отправлен');return;}
+  await dbPost('/friendRequests/'+phone,{fromPhone:user.phone,fromName:user.name,name:name||phone,phone:phone,status:'pending',date:new Date().toLocaleString('ru-RU')});
+  toast('📨 Запрос отправлен!');
 }
-function openFriends(){$('friendsModal').classList.add('active');renderFriends();loadPrivateOffers();}
+function openFriends(){$('friendsModal').classList.add('active');loadFriends();loadPrivateOffers();}
 function closeFriends(){$('friendsModal').classList.remove('active')}
 function switchFriendTab(tab,btn){
   document.querySelectorAll('#friendsModal .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
   $('friendsPane').style.display=tab==='friends'?'block':'none';
+  $('requestsPane').style.display=tab==='requests'?'block':'none';
   $('incomingPane').style.display=tab==='incoming'?'block':'none';
   $('outgoingPane').style.display=tab==='outgoing'?'block':'none';
+  if(tab==='requests')renderFriendRequests();
   if(tab==='incoming')renderIncomingOffers();
   if(tab==='outgoing')renderOutgoingOffers();
 }
 function renderFriends(){
   const s=$('friendSearch').value.toLowerCase();
   const f=friends.filter(x=>(x.name||'').toLowerCase().includes(s)||(x.phone||'').includes(s));
-  $('friendsList').innerHTML=f.length?f.map(fr=>`<div class="friend-item"><div class="friend-avatar">${(fr.name||'👤').charAt(0)}</div><div style="flex:1"><div style="font-weight:600">${fr.name||fr.phone}</div><div style="font-size:0.8rem;color:var(--muted)">${fr.phone}</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="openChat('${fr.phone}','${fr.name}')">💬</button><button class="btn btn-secondary btn-sm" onclick="openSendOffer('${fr.phone}','${fr.name}')">📩</button></div></div>`).join(''):'<p style="text-align:center;color:var(--muted)">Пока нет друзей. Добавь из доски предложений!</p>';
+  $('friendsList').innerHTML=f.length?f.map(fr=>`<div class="friend-item"><div class="friend-avatar">${(fr.name||'👤').charAt(0)}</div><div style="flex:1"><div style="font-weight:600">${fr.name||fr.phone}</div><div style="font-size:0.8rem;color:var(--muted)">${fr.phone}</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="openChat('${fr.phone}','${fr.name}')">💬</button><button class="btn btn-secondary btn-sm" onclick="openSendOffer('${fr.phone}','${fr.name}')">➕</button><button class="btn btn-secondary btn-sm" onclick="removeFriend('${fr.id}')" title="Удалить">🗑️</button></div></div>`).join(''):'<p style="text-align:center;color:var(--muted)">Пока нет друзей. Добавь из доски предложений!</p>';
+}
+async function removeFriend(id){if(!confirm('Удалить из друзей?'))return;await dbPatch('/friends/'+user.phone+'/'+id,{deleted:true});loadFriends();toast('Удалён из друзей');}
+function renderFriendRequests(){
+  const d=$('requestsPane');
+  if(!friendRequests.length){d.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px 0">Нет новых запросов</p>';return;}
+  d.innerHTML=friendRequests.map(r=>`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>👤 ${r.fromName||r.fromPhone}</h4><span class="status-pending">Новый</span></div><div style="font-size:0.85rem;color:var(--muted);margin-bottom:8px">📞 ${r.fromPhone} · ${r.date}</div><div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptFriendRequest('${r.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declineFriendRequest('${r.id}')">❌ Отклонить</button></div></div>`).join('');
+}
+async function acceptFriendRequest(id){
+  const r=friendRequests.find(x=>x.id===id);if(!r)return;
+  await dbPost('/friends/'+user.phone,{name:r.fromName||r.fromPhone,phone:r.fromPhone,addedAt:new Date().toLocaleString('ru-RU')});
+  await dbPatch('/friendRequests/'+user.phone+'/'+id,{status:'accepted'});
+  await dbPost('/friends/'+r.fromPhone,{name:user.name,phone:user.phone,addedAt:new Date().toLocaleString('ru-RU')});
+  loadFriends();toast('👥 Теперь вы друзья!');
+}
+async function declineFriendRequest(id){
+  await dbPatch('/friendRequests/'+user.phone+'/'+id,{status:'declined'});
+  loadFriends();toast('❌ Запрос отклонён');
 }
 
 async function loadPrivateOffers(){
@@ -508,24 +563,67 @@ async function loadPrivateOffers(){
 function renderIncomingOffers(){
   const d=$('incomingPane');
   if(!incomingOffers.length){d.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px 0">Пока нет входящих предложений</p>';return;}
-  d.innerHTML=incomingOffers.map(o=>`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Предложение от ${o.fromName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':'<span class="status-pending">Новое</span>'}</div><div style="background:var(--bg);padding:10px;border-radius:10px;margin:8px 0"><div><strong>🎁 Предлагает:</strong> ${o.offerWhat}</div><div style="margin-top:4px"><strong>🎯 Хочет:</strong> ${o.offerFor}</div></div><p style="font-size:0.85rem;color:var(--muted)">📞 ${o.from} · ${o.date}</p>${o.status==='pending'?`<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptPrivateOffer('${o.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declinePrivateOffer('${o.id}')">❌ Отклонить</button></div>`:''}</div>`).join('');
+  d.innerHTML=incomingOffers.map(o=>{
+    const itemsHtml=(o.items||[]).map(it=>`<span class="order-tag">${it.icon||'🍽️'} ${it.name}</span>`).join('');
+    const counterHtml=o.counterItems&&o.counterItems.length?`<div style="margin-top:8px"><strong>🔄 В ответ предлагает:</strong><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">${o.counterItems.map(it=>`<span class="order-tag">${it.icon||'🍽️'} ${it.name}</span>`).join('')}</div></div>`:'';
+    let actions='';
+    if(o.status==='pending'&&!o.counterItems)actions=`<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptPrivateOffer('${o.id}')">✅ Согласиться</button><button class="btn btn-secondary btn-sm" onclick="openCounterOffer('${o.id}')">🔄 Предложить взамен</button></div>`;
+    else if(o.status==='pending'&&o.counterItems)actions=`<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptPrivateOffer('${o.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declinePrivateOffer('${o.id}')">❌ Отклонить</button></div>`;
+    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Предложение от ${o.fromName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':o.status==='countered'?'<span class="status-pending">Ожидает ответа</span>':'<span class="status-pending">Новое</span>'}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0">${itemsHtml}</div>${counterHtml}<p style="font-size:0.85rem;color:var(--muted)">📞 ${o.from} · ${o.date}</p>${actions}</div>`;
+  }).join('');
 }
 function renderOutgoingOffers(){
   const d=$('outgoingPane');
   if(!outgoingOffers.length){d.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px 0">Пока нет исходящих предложений</p>';return;}
-  d.innerHTML=outgoingOffers.map(o=>`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Для ${o.toName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':'<span class="status-pending">Ожидает</span>'}</div><div style="background:var(--bg);padding:10px;border-radius:10px;margin:8px 0"><div><strong>🎁 Ты предлагаешь:</strong> ${o.offerWhat}</div><div style="margin-top:4px"><strong>🎯 Хочешь:</strong> ${o.offerFor}</div></div><p style="font-size:0.85rem;color:var(--muted)">${o.date}</p></div>`).join('');
+  d.innerHTML=outgoingOffers.map(o=>{
+    const itemsHtml=(o.items||[]).map(it=>`<span class="order-tag">${it.icon||'🍽️'} ${it.name}</span>`).join('');
+    const counterHtml=o.counterItems&&o.counterItems.length?`<div style="margin-top:8px"><strong>🔄 В ответ предлагает:</strong><div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">${o.counterItems.map(it=>`<span class="order-tag">${it.icon||'🍽️'} ${it.name}</span>`).join('')}</div></div>`:'';
+    let actions='';
+    if(o.status==='countered')actions=`<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptPrivateOffer('${o.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declinePrivateOffer('${o.id}')">❌ Отклонить</button></div>`;
+    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Для ${o.toName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':o.status==='countered'?'<span class="status-pending">Встречное предложение</span>':'<span class="status-pending">Ожидает</span>'}</div><div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0">${itemsHtml}</div>${counterHtml}<p style="font-size:0.85rem;color:var(--muted)">${o.date}</p>${actions}</div>`;
+  }).join('');
 }
+function renderOfferPicker(){
+  $('offerDishGrid').innerHTML=dishes.map(d=>`<div class="compact-item${offerItems.find(x=>x.type==='dish'&&x.id===d.id)?' selected':''}" onclick="toggleOfferItem('dish',${d.id},'${d.name}','${d.icon}')"><span class="icon">${d.icon}</span>${d.name}</div>`).join('');
+  $('offerSvcGrid').innerHTML=services.map(s=>`<div class="compact-item${offerItems.find(x=>x.type==='svc'&&x.id===s.id)?' selected':''}" onclick="toggleOfferItem('svc','${s.id}','${s.name}','${s.icon}')"><span class="icon">${s.icon}</span>${s.name}</div>`).join('');
+  $('offerDishTags').innerHTML=offerItems.filter(x=>x.type==='dish').map(it=>`<span class="order-tag">${it.icon} ${it.name}</span>`).join('');
+  $('offerSvcTags').innerHTML=offerItems.filter(x=>x.type==='svc').map(it=>`<span class="order-tag">${it.icon} ${it.name}</span>`).join('');
+}
+function toggleOfferItem(type,id,name,icon){const ex=offerItems.find(x=>x.type===type&&x.id===id);if(ex)offerItems=offerItems.filter(x=>!(x.type===type&&x.id===id));else offerItems.push({type,id,name,icon});renderOfferPicker();}
 function openSendOffer(phone,name){
   if(!user){toast('Войди, чтобы отправить');openAuth();return;}
-  activeOfferTo=phone;
+  activeOfferTo=phone;offerItems=[];renderOfferPicker();
   $('offerToName').value=name||phone;
-  $('offerContact').value=user.phone;
   $('sendOfferModal').classList.add('active');
 }
-function closeSendOffer(){$('sendOfferModal').classList.remove('active');activeOfferTo=null;}
-async function saveOffer(e){e.preventDefault();if(!activeOfferTo||!user)return;const o={from:user.phone,fromName:user.name,to:activeOfferTo,toName:$('offerToName').value,offerWhat:$('offerWhat').value,offerFor:$('offerFor').value,status:'pending',date:new Date().toLocaleString('ru-RU')};await dbPost('/offers/'+activeOfferTo,o);await dbPost('/offersFrom/'+user.phone,o);closeSendOffer();document.querySelector('#sendOfferModal form').reset();toast('📩 Предложение отправлено!');loadPrivateOffers();}
-async function acceptPrivateOffer(id){const o=incomingOffers.find(x=>x.id===id);if(!o)return;await dbPatch('/offers/'+user.phone+'/'+id,{status:'accepted'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'accepted'});loadPrivateOffers();toast('✅ Предложение принято!');}
-async function declinePrivateOffer(id){const o=incomingOffers.find(x=>x.id===id);if(!o)return;await dbPatch('/offers/'+user.phone+'/'+id,{status:'declined'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'declined'});loadPrivateOffers();toast('❌ Предложение отклонено');}
+function closeSendOffer(){$('sendOfferModal').classList.remove('active');activeOfferTo=null;offerItems=[];}
+async function saveOffer(e){e.preventDefault();if(!activeOfferTo||!user)return;if(!offerItems.length){toast('Выбери хотя бы одно блюдо или услугу');return;}const offerId='offer_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);const o={from:user.phone,fromName:user.name,to:activeOfferTo,toName:$('offerToName').value,items:offerItems,status:'pending',date:new Date().toLocaleString('ru-RU')};await dbPut('/offers/'+activeOfferTo+'/'+offerId,o);await dbPut('/offersFrom/'+user.phone+'/'+offerId,o);closeSendOffer();offerItems=[];renderOfferPicker();document.querySelector('#sendOfferModal form').reset();toast('📩 Предложение отправлено!');loadPrivateOffers();}
+async function acceptPrivateOffer(id){
+  const inc=incomingOffers.find(x=>x.id===id);
+  const out=outgoingOffers.find(x=>x.id===id);
+  const o=inc||out;if(!o)return;
+  if(inc){await dbPatch('/offers/'+user.phone+'/'+id,{status:'accepted'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'accepted'});}
+  else{await dbPatch('/offersFrom/'+user.phone+'/'+id,{status:'accepted'});await dbPatch('/offers/'+o.to+'/'+id,{status:'accepted'});}
+  loadPrivateOffers();toast('✅ Предложение принято!');
+}
+async function declinePrivateOffer(id){
+  const inc=incomingOffers.find(x=>x.id===id);
+  const out=outgoingOffers.find(x=>x.id===id);
+  const o=inc||out;if(!o)return;
+  if(inc){await dbPatch('/offers/'+user.phone+'/'+id,{status:'declined'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'declined'});}
+  else{await dbPatch('/offersFrom/'+user.phone+'/'+id,{status:'declined'});await dbPatch('/offers/'+o.to+'/'+id,{status:'declined'});}
+  loadPrivateOffers();toast('❌ Предложение отклонено');
+}
+function openCounterOffer(id){counterOfferId=id;counterItems=[];renderCounterPicker();$('counterOfferModal').classList.add('active');}
+function closeCounterOffer(){$('counterOfferModal').classList.remove('active');counterOfferId=null;counterItems=[];}
+function renderCounterPicker(){
+  $('counterDishGrid').innerHTML=dishes.map(d=>`<div class="compact-item${counterItems.find(x=>x.type==='dish'&&x.id===d.id)?' selected':''}" onclick="toggleCounterItem('dish',${d.id},'${d.name}','${d.icon}')"><span class="icon">${d.icon}</span>${d.name}</div>`).join('');
+  $('counterSvcGrid').innerHTML=services.map(s=>`<div class="compact-item${counterItems.find(x=>x.type==='svc'&&x.id===s.id)?' selected':''}" onclick="toggleCounterItem('svc','${s.id}','${s.name}','${s.icon}')"><span class="icon">${s.icon}</span>${s.name}</div>`).join('');
+  $('counterDishTags').innerHTML=counterItems.filter(x=>x.type==='dish').map(it=>`<span class="order-tag">${it.icon} ${it.name}</span>`).join('');
+  $('counterSvcTags').innerHTML=counterItems.filter(x=>x.type==='svc').map(it=>`<span class="order-tag">${it.icon} ${it.name}</span>`).join('');
+}
+function toggleCounterItem(type,id,name,icon){const ex=counterItems.find(x=>x.type===type&&x.id===id);if(ex)counterItems=counterItems.filter(x=>!(x.type===type&&x.id===id));else counterItems.push({type,id,name,icon});renderCounterPicker();}
+async function saveCounterOffer(){if(!counterOfferId||!counterItems.length){toast('Выбери хотя бы один пункт');return;}const o=incomingOffers.find(x=>x.id===counterOfferId);if(!o)return;await dbPatch('/offers/'+user.phone+'/'+counterOfferId,{counterItems,status:'countered'});await dbPatch('/offersFrom/'+o.from+'/'+counterOfferId,{counterItems,status:'countered'});closeCounterOffer();loadPrivateOffers();toast('🔄 Встречное предложение отправлено!');}
 
 function chatId(a,b){const p=[a,b].sort();return p[0]+'_'+p[1];}
 function openChat(phone,name){
