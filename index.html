@@ -1,18 +1,404 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
-    <meta name="theme-color" content="#FAF8F5" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="format-detection" content="telephone=no" />
-    <title>Едлок — Домашняя еда на услуги</title>
-    <script type="module" crossorigin src="./assets/index-DjnEUAMy.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-5GKnHtwC.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<title>Едлок — Домашняя еда на услуги</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FAF8F5;--card:#fff;--text:#2D2A26;--muted:#6B6560;--green:#4A7C59;--green-light:#E8F5E9;--orange:#D4864A;--orange-light:#FFF3E0;--border:#E8E4DF;--shadow:rgba(45,42,38,0.08);--radius:16px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+header{position:sticky;top:0;background:rgba(250,248,245,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);z-index:100}
+nav{max-width:1200px;margin:0 auto;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:1.5rem;font-weight:800;color:var(--orange);text-decoration:none;display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:28px;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;color:var(--muted);font-weight:500;font-size:0.95rem;transition:color .2s}
+.nav-links a:hover{color:var(--green)}
+.cart-btn{background:var(--green);color:#fff;border:none;padding:10px 18px;border-radius:50px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:0.9rem}
+.cart-count{background:#fff;color:var(--green);width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700}
+.mobile-menu-btn{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--text)}
+.mobile-nav{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(255,255,255,0.98);z-index:200;flex-direction:column;padding:80px 24px 24px;gap:12px}
+.mobile-nav.active{display:flex}
+.mobile-nav a{font-size:1.2rem;font-weight:600;color:var(--text);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--border)}
+.mobile-nav .close{position:absolute;top:16px;right:20px;font-size:2rem;background:none;border:none;cursor:pointer}
+.hero{max-width:1200px;margin:0 auto;padding:60px 20px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:2.8rem;font-weight:800;line-height:1.1;margin-bottom:16px}
+.hero h1 span{color:var(--green)}
+.hero p{font-size:1.1rem;color:var(--muted);margin-bottom:24px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:12px 28px;border-radius:50px;font-weight:600;font-size:0.95rem;cursor:pointer;transition:all .2s;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.btn-primary{background:var(--green);color:#fff}
+.btn-primary:hover{background:#3d6b4a;transform:translateY(-2px)}
+.btn-secondary{background:#fff;color:var(--text);border:1.5px solid var(--border)}
+.btn-secondary:hover{border-color:var(--green);color:var(--green)}
+.hero-circle{width:300px;height:300px;background:linear-gradient(135deg,var(--green-light) 0%,var(--orange-light) 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:6rem;margin:0 auto}
+.section{padding:60px 20px;max-width:1200px;margin:0 auto}
+.section-title{text-align:center;margin-bottom:40px}
+.section-title h2{font-size:2rem;font-weight:700;margin-bottom:8px}
+.section-title p{color:var(--muted);font-size:1rem}
+.tabs{display:flex;justify-content:center;gap:10px;margin-bottom:32px;flex-wrap:wrap}
+.tab{padding:10px 20px;border-radius:50px;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-weight:500;font-size:0.9rem;transition:all .2s;color:var(--muted)}
+.tab.active{background:var(--green);color:#fff;border-color:var(--green)}
+.tab:hover:not(.active){border-color:var(--green);color:var(--green)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.card{background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);transition:all .3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 32px var(--shadow)}
+.card-img{height:160px;background:linear-gradient(135deg,var(--green-light) 0%,var(--orange-light) 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative}
+.card-tag{position:absolute;top:10px;left:10px;background:#fff;padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600;color:var(--green)}
+.card-body{padding:16px}
+.card-body h3{font-size:1rem;margin-bottom:6px}
+.card-body p{color:var(--muted);font-size:0.85rem;margin-bottom:12px}
+.card-footer{display:flex;justify-content:space-between;align-items:center}
+.card-action{color:var(--green);font-weight:600;font-size:0.85rem}
+.add-btn{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.add-btn:hover{background:#3d6b4a}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.service-card{padding:24px 16px;border-radius:var(--radius);background:var(--bg);border:2px solid transparent;cursor:pointer;transition:all .3s;text-align:center}
+.service-card:hover,.service-card.selected{border-color:var(--green);background:var(--green-light)}
+.service-card .icon{font-size:2.5rem;margin-bottom:10px}
+.service-card h3{font-size:1rem;margin-bottom:6px}
+.service-card p{font-size:0.85rem;color:var(--muted)}
+.service-card .value{margin-top:8px;font-weight:700;color:var(--green);font-size:0.9rem}
+.form-section{max-width:700px;margin:0 auto}
+.form-card{background:#fff;padding:32px;border-radius:var(--radius);border:1px solid var(--border)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-weight:600;margin-bottom:6px;font-size:0.9rem}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:inherit;font-size:0.95rem;transition:border-color .2s;background:var(--bg)}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--green)}
+.form-group textarea{min-height:80px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.checkbox{display:flex;align-items:center;gap:10px;margin-bottom:16px;cursor:pointer}
+.checkbox input{width:18px;height:18px;accent-color:var(--green)}
+.submit-btn{width:100%;padding:14px;font-size:1rem}
+.modal-overlay{position:fixed;inset:0;background:rgba(45,42,38,0.5);backdrop-filter:blur(4px);display:none;justify-content:center;align-items:center;z-index:200;padding:16px}
+.modal-overlay.active{display:flex}
+.modal{background:#fff;border-radius:var(--radius);max-width:520px;width:100%;max-height:90vh;overflow-y:auto;animation:modalIn .3s ease}
+@keyframes modalIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.modal-header h2{font-size:1.2rem}
+.modal-close{background:none;border:none;font-size:1.5rem;cursor:pointer;color:var(--muted);width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.modal-close:hover{background:var(--bg)}
+.modal-body{padding:20px 24px}
+.cart-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.cart-item-icon{font-size:2rem;width:48px;height:48px;background:var(--bg);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.cart-item-info{flex:1}
+.cart-item-info h4{font-size:0.95rem}
+.cart-item-info p{font-size:0.8rem;color:var(--muted)}
+.qty-btn{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+.qty-btn:hover{border-color:var(--green);color:var(--green)}
+.cart-empty{text-align:center;padding:40px 0;color:var(--muted)}
+.cart-empty .icon{font-size:3rem;margin-bottom:12px;opacity:0.5}
+.order-card{background:var(--bg);border-radius:var(--radius);padding:20px;margin-bottom:12px;border-left:4px solid var(--green)}
+.order-card h4{font-size:1rem;margin-bottom:8px}
+.order-card p{color:var(--muted);font-size:0.85rem;margin-bottom:4px}
+.order-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.order-tag{background:#fff;padding:4px 12px;border-radius:50px;font-size:0.8rem;border:1px solid var(--border)}
+.status-new{background:var(--green-light);color:var(--green);padding:4px 12px;border-radius:50px;font-size:0.75rem;font-weight:600}
+footer{background:var(--text);color:rgba(255,255,255,0.7);padding:40px 20px 20px;text-align:center}
+footer .logo{color:#fff;justify-content:center;margin-bottom:12px}
+footer p{font-size:0.85rem}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:14px 20px;border-radius:10px;font-weight:500;z-index:300;transform:translateY(100px);opacity:0;transition:all .4s}
+.toast.show{transform:translateY(0);opacity:1}
+.emoji-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.emoji-btn{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--border);background:#fff;cursor:pointer;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.emoji-btn:hover,.emoji-btn.selected{border-color:var(--green);background:var(--green-light)}
+.board-card{background:#fff;border-radius:var(--radius);padding:16px;margin-bottom:12px;border:1px solid var(--border)}
+.board-card h4{font-size:1rem;margin-bottom:4px}
+.board-card .meta{color:var(--muted);font-size:0.8rem;margin-bottom:8px}
+.board-card p{font-size:0.9rem;margin-bottom:10px}
+.replies{margin-top:12px;padding:12px;background:var(--bg);border-radius:10px}
+.reply{padding:8px;background:#fff;border-radius:8px;margin-bottom:6px;font-size:0.85rem}
+.reply strong{font-size:0.9rem}
+@media(max-width:900px){
+.hero{grid-template-columns:1fr;text-align:center;padding-top:40px}
+.hero h1{font-size:2.2rem}
+.hero p{margin:0 auto 24px}
+.hero-btns{justify-content:center}
+.hero-circle{width:220px;height:220px;font-size:4.5rem}
+.nav-links{display:none}
+.mobile-menu-btn{display:block}
+.form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+.grid{grid-template-columns:1fr}
+.services-grid{grid-template-columns:1fr}
+.hero h1{font-size:1.8rem}
+.form-card{padding:20px}
+.section{padding:40px 16px}
+.tab{padding:8px 14px;font-size:0.85rem}
+}
+</style>
+</head>
+<body>
+<header>
+<nav>
+<a href="#" class="logo">🍲 Едлок</a>
+<ul class="nav-links">
+<li><a href="#menu">Меню</a></li>
+<li><a href="#services">Услуги</a></li>
+<li><a href="#order">Заказ</a></li>
+<li><a href="#board">Доска</a></li>
+<li><a href="#orders">Предложения</a></li>
+<li><button class="cart-btn" onclick="openCart()">🛒 <span id="cartCount" class="cart-count">0</span></button></li>
+<li><button class="btn btn-secondary" onclick="openAuth()" id="authBtn">Войти</button></li>
+</ul>
+<button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+</nav>
+</header>
+
+<div class="mobile-nav" id="mobileNav">
+<button class="close" onclick="toggleMobileMenu()">✕</button>
+<a href="#menu" onclick="toggleMobileMenu()">Меню</a>
+<a href="#services" onclick="toggleMobileMenu()">Услуги</a>
+<a href="#order" onclick="toggleMobileMenu()">Заказ</a>
+<a href="#board" onclick="toggleMobileMenu()">Доска</a>
+<a href="#orders" onclick="toggleMobileMenu()">Предложения</a>
+<button class="cart-btn" onclick="toggleMobileMenu();openCart()" style="margin-top:12px">🛒 Корзина <span id="mobCartCount">0</span></button>
+<button class="btn btn-secondary" onclick="toggleMobileMenu();openAuth()" id="mobAuthBtn">Войти</button>
+</div>
+
+<section class="hero">
+<div>
+<h1>Домашняя еда,<br>которую можно <span>обменять</span><br>на услуги</h1>
+<p>Готовишь вкусно? Меняй домашние блюда на уборку, мойку посуды, глажку и другие бытовые услуги.</p>
+<div class="hero-btns">
+<a href="#menu" class="btn btn-primary">🍽️ Меню</a>
+<a href="#order" class="btn btn-secondary">✨ Создать предложение</a>
+</div>
+</div>
+<div class="hero-circle">🏡</div>
+</section>
+
+<section class="section" id="menu">
+<div class="section-title">
+<h2>Меню домашних блюд</h2>
+<p>Выбери, что хочешь приготовить или заказать</p>
+</div>
+<div style="display:flex;justify-content:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+<button class="btn btn-secondary" onclick="openAddDish()">➕ Добавить своё блюдо</button>
+</div>
+<div class="tabs" id="menuTabs"></div>
+<div class="grid" id="menuGrid"></div>
+</section>
+
+<section class="section" style="background:#fff" id="services">
+<div class="section-title">
+<h2>Услуги для обмена</h2>
+<p>Выбери, какую услугу ты готов оказать или получить взамен на еду</p>
+</div>
+<div style="display:flex;justify-content:center;gap:12px;margin-bottom:24px;flex-wrap:wrap">
+<button class="btn btn-secondary" onclick="openAddService()">➕ Добавить свою услугу</button>
+</div>
+<div class="services-grid" id="servicesGrid"></div>
+</section>
+
+<section class="section" id="order">
+<div class="section-title">
+<h2>Создать предложение</h2>
+<p>Заполни форму, чтобы предложить еду или найти блюда</p>
+</div>
+<div class="form-section">
+<div class="form-card">
+<form onsubmit="submitOrder(event)">
+<div class="form-row">
+<div class="form-group"><label>Твоё имя</label><input type="text" id="oName" placeholder="Олена" required></div>
+<div class="form-group"><label>Телефон или Telegram</label><input type="text" id="oPhone" placeholder="+380..." required></div>
+</div>
+<div class="form-group"><label>Тип предложения</label><select id="oType" required><option value="">Выбери...</option><option value="cook">Я готовлю еду и хочу обменять на услугу</option><option value="order">Я хочу заказать еду и готов выполнить услугу</option></select></div>
+<div class="form-group"><label>Блюда</label><textarea id="oDishes" placeholder="Борщ (2 порции)..." required></textarea></div>
+<div class="checkbox"><input type="checkbox" id="oWholeDay" onchange="toggleSvc2()"><label for="oWholeDay">🌟 Заказ на целый день (2 услуги взамен)</label></div>
+<div class="form-group"><label>Услуга для обмена</label><select id="oSvc1" required></select></div>
+<div class="form-group" id="svc2Wrap" style="display:none"><label>Вторая услуга</label><select id="oSvc2"></select></div>
+<div class="form-group"><label>Комментарий</label><textarea id="oComment" placeholder="Адрес, время..."></textarea></div>
+<button type="submit" class="btn btn-primary submit-btn">🚀 Опубликовать предложение</button>
+</form>
+</div>
+</div>
+</section>
+
+<section class="section" id="board">
+<div class="section-title">
+<h2>Доска предложений</h2>
+<p>Предлагай блюда или услуги и отвечай на предложения других</p>
+</div>
+<div class="tabs">
+<button class="tab active" onclick="switchBoard('dish',this)">🍲 Блюда</button>
+<button class="tab" onclick="switchBoard('service',this)">🧹 Услуги</button>
+</div>
+<div style="display:flex;justify-content:center;margin-bottom:20px">
+<button class="btn btn-primary" onclick="openAddListing()">➕ Добавить предложение</button>
+</div>
+<div id="boardList"></div>
+</section>
+
+<section class="section" style="background:#fff" id="orders">
+<div class="section-title">
+<h2>Активные предложения</h2>
+<p>Вот что предлагают люди сейчас</p>
+</div>
+<div id="ordersList"></div>
+</section>
+
+<footer>
+<div class="logo">🍲 Едлок</div>
+<p>Домашняя еда и услуги — меняйтесь с заботой</p>
+<p style="margin-top:12px;font-size:0.75rem;opacity:0.5">2025 Едлок</p>
+</footer>
+
+<!-- Modals -->
+<div class="modal-overlay" id="cartModal" onclick="if(event.target===this)closeCart()"><div class="modal"><div class="modal-header"><h2>🛒 Корзина</h2><button class="modal-close" onclick="closeCart()">✕</button></div><div class="modal-body" id="cartBody"></div></div></div>
+<div class="modal-overlay" id="addDishModal" onclick="if(event.target===this)closeAddDish()"><div class="modal"><div class="modal-header"><h2>➕ Добавить блюдо</h2><button class="modal-close" onclick="closeAddDish()">✕</button></div><div class="modal-body"><form onsubmit="saveDish(event)"><div class="form-group"><label>Название</label><input id="dName" required></div><div class="form-group"><label>Описание</label><input id="dDesc" required></div><div class="form-group"><label>Категория</label><select id="dCat" required></select></div><div class="form-group"><label>Эмодзи</label><input id="dIcon" value="🍽️" maxlength="2"><div class="emoji-grid" id="dishEmojis"></div></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
+<div class="modal-overlay" id="addServiceModal" onclick="if(event.target===this)closeAddService()"><div class="modal"><div class="modal-header"><h2>➕ Добавить услугу</h2><button class="modal-close" onclick="closeAddService()">✕</button></div><div class="modal-body"><form onsubmit="saveService(event)"><div class="form-group"><label>Название</label><input id="sName" required></div><div class="form-group"><label>Описание</label><input id="sDesc" required></div><div class="form-group"><label>Примерное время</label><input id="sValue" placeholder="≈ 30 мин" required></div><div class="form-group"><label>Эмодзи</label><input id="sIcon" value="✨" maxlength="2"><div class="emoji-grid" id="svcEmojis"></div></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
+<div class="modal-overlay" id="addListingModal" onclick="if(event.target===this)closeAddListing()"><div class="modal"><div class="modal-header"><h2>➕ Добавить предложение</h2><button class="modal-close" onclick="closeAddListing()">✕</button></div><div class="modal-body"><form onsubmit="saveListing(event)"><div class="form-group"><label>Заголовок</label><input id="lTitle" required></div><div class="form-group"><label>Описание</label><textarea id="lDesc" required></textarea></div><div class="form-group"><label>Твоё имя</label><input id="lAuthor" required></div><div class="form-group"><label>Контакт</label><input id="lContact" placeholder="+380..." required></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
+<div class="modal-overlay" id="replyModal" onclick="if(event.target===this)closeReply()"><div class="modal"><div class="modal-header"><h2>💬 Ответить</h2><button class="modal-close" onclick="closeReply()">✕</button></div><div class="modal-body"><form onsubmit="saveReply(event)"><div class="form-group"><label>Твоё имя</label><input id="rAuthor" required></div><div class="form-group"><label>Сообщение</label><textarea id="rMsg" required></textarea></div><button class="btn btn-primary submit-btn">Отправить</button></form></div></div></div>
+<div class="modal-overlay" id="authModal" onclick="if(event.target===this)closeAuth()"><div class="modal"><div class="modal-header"><h2>🔑 Вход / Регистрация</h2><button class="modal-close" onclick="closeAuth()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchAuth('login',this)">Вход</button><button class="tab" onclick="switchAuth('register',this)">Регистрация</button></div><form id="loginForm" onsubmit="doLogin(event)"><div class="form-group"><label>Телефон</label><input id="loginPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="loginPass" required></div><button class="btn btn-primary submit-btn">Войти</button></form><form id="regForm" onsubmit="doRegister(event)" style="display:none"><div class="form-group"><label>Имя</label><input id="regName" required></div><div class="form-group"><label>Телефон</label><input id="regPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="regPass" required></div><button class="btn btn-primary submit-btn">Зарегистрироваться</button></form></div></div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const categories=[{key:'all',label:'Все блюда'},{key:'first',label:'Первые'},{key:'second',label:'Вторые'},{key:'breakfast',label:'Завтраки'},{key:'snack',label:'Закуски'},{key:'bakery',label:'Выпечка'},{key:'salad',label:'Салаты'},{key:'dessert',label:'Десерты'},{key:'drink',label:'Напитки'}];
+const catNames={first:'Первое',second:'Второе',breakfast:'Завтрак',snack:'Закуска',bakery:'Выпечка',salad:'Салат',dessert:'Десерт',drink:'Напиток'};
+let defaultDishes=[
+{id:1,name:'Борщ',desc:'Настоящий домашний борщ со сметаной',category:'first',icon:'🍲'},{id:2,name:'Суп с фрикадельками',desc:'Ароматный суп с мясными фрикадельками',category:'first',icon:'🥣'},{id:3,name:'Рисовый суп',desc:'Лёгкий сытный рисовый суп',category:'first',icon:'🍚'},{id:4,name:'Солянка',desc:'Густая сборная мясная солянка',category:'first',icon:'🥘'},
+{id:5,name:'Котлета по-киевски с пюре',desc:'Сочная куриная котлета с пюре',category:'second',icon:'🍗'},{id:6,name:'Острые крылышки',desc:'Пикантные острые куриные крылышки',category:'second',icon:'🍗'},{id:7,name:'Курица терияки с рисом',desc:'Нежная курица в соусе терияки',category:'second',icon:'🍚'},{id:8,name:'Пюре с отбивными',desc:'Воздушное пюре с сочными отбивными',category:'second',icon:'🥩'},{id:9,name:'Бургер с картофелем фри',desc:'Бургер с сыром и картошкой фри',category:'second',icon:'🍔'},{id:10,name:'Паста карбонара',desc:'Итальянская паста с беконом',category:'second',icon:'🍝'},
+{id:11,name:'Сырники',desc:'Пышные творожные сырники',category:'breakfast',icon:'🧀'},{id:12,name:'Оладьи',desc:'Мягкие молочные оладьи',category:'breakfast',icon:'🥞'},{id:13,name:'Блинчики',desc:'Тонкие нежные блинчики',category:'breakfast',icon:'🥞'},{id:14,name:'Яичница',desc:'Домашняя яичница с зеленью',category:'breakfast',icon:'🍳'},{id:15,name:'Авокадо-тост',desc:'Хрустящий тост с авокадо',category:'breakfast',icon:'🥑'},
+{id:16,name:'Бутерброд с красной рыбой',desc:'Тост с красной рыбой и сыром',category:'snack',icon:'🥪'},{id:17,name:'Чесночная гренка с яйцом',desc:'Хрустящая гренка с яйцом',category:'snack',icon:'🍞'},{id:18,name:'Хумус с овощами',desc:'Нежный хумус с овощами',category:'snack',icon:'🥙'},{id:19,name:'Сырная тарелка',desc:'Ассорти сыров с виноградом',category:'snack',icon:'🧀'},
+{id:20,name:'Домашний хлеб',desc:'Свежий хрустящий хлеб',category:'bakery',icon:'🥖'},{id:21,name:'Круассан',desc:'Слоёный французский круассан',category:'bakery',icon:'🥐'},{id:22,name:'Пирог с яблоками',desc:'Душистый яблочный пирог',category:'bakery',icon:'🥧'},{id:23,name:'Булочка с корицей',desc:'Мягкая сдобная булочка',category:'bakery',icon:'🍩'},
+{id:24,name:'Салат Оливье',desc:'Классический салат с горошком',category:'salad',icon:'🥗'},{id:25,name:'Цезарь',desc:'Салат с курицей и пармезаном',category:'salad',icon:'🥗'},{id:26,name:'Греческий салат',desc:'Свежие овощи с фетой',category:'salad',icon:'🥗'},{id:27,name:'Селёдка под шубой',desc:'Слоёный салат с сельдью',category:'salad',icon:'🥗'},
+{id:28,name:'Тирамису',desc:'Итальянский десерт с маскарпоне',category:'dessert',icon:'🍰'},{id:29,name:'Чизкейк',desc:'Нежный сливочный чизкейк',category:'dessert',icon:'🍰'},{id:30,name:'Медовик',desc:'Многослойный торт с мёдом',category:'dessert',icon:'🍯'},{id:31,name:'Панна-котта',desc:'Итальянский сливочный десерт',category:'dessert',icon:'🍮'},
+{id:32,name:'Кофе',desc:'Ароматный чёрный кофе',category:'drink',icon:'☕'},{id:33,name:'Чай',desc:'Чёрный, зелёный или травяной',category:'drink',icon:'🍵'},{id:34,name:'Компот',desc:'Сладкий домашний компот',category:'drink',icon:'🍎'},{id:35,name:'Кола',desc:'Холодная газированная кола',category:'drink',icon:'🥤'},{id:36,name:'Фанта',desc:'Холодная газированная фанта',category:'drink',icon:'🧃'},{id:37,name:'Ягодный смузи',desc:'Смузи из клубники и банана',category:'drink',icon:'🍹'}
+];
+let defaultServices=[
+{id:'cleaning',name:'Уборка квартиры',desc:'Комплексная уборка всех комнат',icon:'🧹',value:'≈ 1.5 часа'},{id:'vacuum',name:'Пропылесосить',desc:'Пылесосение пола и мебели',icon:'🌀',value:'≈ 20-30 мин'},{id:'dishes',name:'Помыть посуду',desc:'Мытьё посуды и чистка раковины',icon:'🍽️',value:'≈ 15-20 мин'},{id:'trash',name:'Вынести мусор',desc:'Вынос мусора и замена пакетов',icon:'🗑️',value:'≈ 10 мин'},{id:'ironing',name:'Погладить вещи',desc:'Глажка одежды и белья',icon:'👔',value:'≈ 40-60 мин'},{id:'shopping',name:'Помочь с покупками',desc:'Поход в магазин',icon:'🛒',value:'≈ 40 мин'},{id:'windows',name:'Помыть окна',desc:'Мытьё окон и подоконников',icon:'🪟',value:'≈ 1 час'},{id:'repair',name:'Помочь с ремонтом',desc:'Мелкий бытовой ремонт',icon:'🔧',value:'≈ 1-2 часа'},{id:'dog',name:'Погулять с собакой',desc:'Выгул собаки в парке',icon:'🐕',value:'≈ 30-40 мин'},{id:'cook',name:'Помочь с готовкой',desc:'Помощь на кухне',icon:'👨‍🍳',value:'≈ 1 час'}
+];
+let customDishes=JSON.parse(localStorage.getItem('yedlok_custom_dishes'))||[];
+let customServices=JSON.parse(localStorage.getItem('yedlok_custom_services'))||[];
+let cart=JSON.parse(localStorage.getItem('yedlok_cart'))||[];
+let user=JSON.parse(localStorage.getItem('yedlok_current_user'))||null;
+let replyToId=null;
+let activeBoard='dish';
+let selectedSvc=null;
+let orders=[];
+let listings=[];
+
+const DB='https://edlock-5a554-default-rtdb.firebaseio.com';
+async function dbGet(path){try{const r=await fetch(DB+path+'.json');const d=await r.json();return d;}catch(e){console.error(e);return null;}}
+async function dbPost(path,data){try{const r=await fetch(DB+path+'.json',{method:'POST',body:JSON.stringify(data)});return await r.json();}catch(e){console.error(e);return null;}}
+async function dbPatch(path,data){try{const r=await fetch(DB+path+'.json',{method:'PATCH',body:JSON.stringify(data)});return await r.json();}catch(e){console.error(e);return null;}}
+
+async function loadOrders(){
+  const data=await dbGet('/orders');
+  orders=data?Object.keys(data).map(k=>({id:k,...data[k]})).reverse():[];
+  renderOrders();
+}
+async function loadListings(){
+  const data=await dbGet('/listings');
+  listings=data?Object.keys(data).map(k=>({id:k,...data[k]})).reverse():[];
+  renderBoard();
+}
+setInterval(()=>{loadOrders();loadListings();},5000);
+
+const dishes=[...defaultDishes,...customDishes];
+const services=[...defaultServices,...customServices];
+const dishEmojis=['🍲','🥣','🍚','🥘','🍗','🍔','🍝','🥩','🧀','🥞','🍳','🥑','🥪','🍞','🥙','🥖','🥐','🥧','🍩','🥗','🍰','🍯','🍮','☕','🍵','🍎','🥤','🧃','🍹','🍕','🌮','🍜','🥗','🍛','🍤','🍪','🍫','🍬','🍭','🍷'];
+const svcEmojis=['🧹','🌀','🍽️','🗑️','👔','🛒','🪟','🔧','🐕','👨‍🍳','🚗','✂️','🪴','💻','📦','🎨','🧼','🧽','🪣','🧯','🔨','🪛','🧰','🚿','🛁','🧴','🪒','💈','🎸','📚','🧸','🏠','🌳','🚲','⚡','💧','🔥','❄️','🌸'];
+
+function $(id){return document.getElementById(id)}
+
+function toast(msg){const t=$('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+function toggleMobileMenu(){$('mobileNav').classList.toggle('active')}
+
+function updateUserUI(){
+  const n=user?user.name:'';
+  $('authBtn').textContent=user?'👋 '+n:'Войти';
+  $('mobAuthBtn').textContent=user?'👋 '+n:'Войти';
+  if(user){$('oName').value=n;}
+}
+
+function openAuth(){$('authModal').classList.add('active')}
+function closeAuth(){$('authModal').classList.remove('active')}
+function switchAuth(mode,btn){
+  document.querySelectorAll('#authModal .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  $('loginForm').style.display=mode==='login'?'block':'none';
+  $('regForm').style.display=mode==='register'?'block':'none';
+}
+function doLogin(e){e.preventDefault();const u={phone:$('loginPhone').value,name:$('loginPhone').value};user=u;localStorage.setItem('yedlok_current_user',JSON.stringify(u));updateUserUI();closeAuth();toast('Вход выполнен!')}
+function doRegister(e){e.preventDefault();const u={name:$('regName').value,phone:$('regPhone').value};user=u;localStorage.setItem('yedlok_current_user',JSON.stringify(u));updateUserUI();closeAuth();toast('Регистрация успешна!')}
+
+function renderMenu(cat){
+  const g=$('menuGrid');
+  const filtered=cat==='all'?dishes:dishes.filter(d=>d.category===cat);
+  g.innerHTML=filtered.map(d=>`
+    <div class="card">
+      <div class="card-img">${d.icon}<span class="card-tag">${catNames[d.category]||d.category}</span></div>
+      <div class="card-body">
+        <h3>${d.name}</h3>
+        <p>${d.desc}</p>
+        <div class="card-footer"><span class="card-action">Обмен на услугу</span><button class="add-btn" onclick="addToCart(${d.id})">+</button></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderTabs(){
+  $('menuTabs').innerHTML=categories.map(c=>`<button class="tab${c.key==='all'?' active':''}" onclick="switchTab('${c.key}',this)">${c.label}</button>`).join('');
+}
+function switchTab(key,btn){document.querySelectorAll('#menuTabs .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderMenu(key);}
+
+function renderServices(){
+  $('servicesGrid').innerHTML=services.map(s=>`<div class="service-card${selectedSvc===s.id?' selected':''}" onclick="selectSvc('${s.id}')"><div class="icon">${s.icon}</div><h3>${s.name}</h3><p>${s.desc}</p><div class="value">${s.value}</div></div>`).join('');
+  const opts=services.map(s=>`<option value="${s.name}">${s.icon} ${s.name}</option>`).join('');
+  $('oSvc1').innerHTML='<option value="">Выбери услугу...</option>'+opts;
+  $('oSvc2').innerHTML='<option value="">Выбери вторую...</option>'+opts;
+}
+function selectSvc(id){selectedSvc=selectedSvc===id?null:id;renderServices();if(selectedSvc){const s=services.find(x=>x.id===id);toast('Услуга: '+s.name);$('oSvc1').value=s.name;}}
+
+function addToCart(id){const d=dishes.find(x=>x.id===id);const ex=cart.find(x=>x.id===id);if(ex)ex.qty++;else cart.push({...d,qty:1});saveCart();updateCartUI();toast('Добавлено: '+d.name)}
+function saveCart(){localStorage.setItem('yedlok_cart',JSON.stringify(cart))}
+function updateCartUI(){const n=cart.reduce((s,i)=>s+i.qty,0);$('cartCount').textContent=n;$('mobCartCount').textContent=n;}
+function openCart(){const b=$('cartBody');if(!cart.length){b.innerHTML='<div class="cart-empty"><div class="icon">🍽️</div><p>Корзина пуста</p></div>';}else{b.innerHTML=cart.map(i=>`<div class="cart-item"><div class="cart-item-icon">${i.icon}</div><div class="cart-item-info"><h4>${i.name}</h4><p>${i.qty} порц.</p></div><div style="display:flex;align-items:center;gap:8px"><button class="qty-btn" onclick="updateQty(${i.id},-1)">−</button><span>${i.qty}</span><button class="qty-btn" onclick="updateQty(${i.id},1)">+</button></div></div>`).join('')+'<button class="btn btn-primary submit-btn" onclick="closeCart();goToOrder()" style="margin-top:16px">Перейти к заказу →</button>';}$('cartModal').classList.add('active');}
+function closeCart(){$('cartModal').classList.remove('active')}
+function updateQty(id,d){const i=cart.find(x=>x.id===id);if(i){i.qty+=d;if(i.qty<=0)cart=cart.filter(x=>x.id!==id);saveCart();updateCartUI();openCart();}}
+function goToOrder(){$('oDishes').value=cart.map(i=>i.name+' ('+i.qty+' порц.)').join(', ');$('order').scrollIntoView({behavior:'smooth'});}
+
+function toggleSvc2(){$('svc2Wrap').style.display=$('oWholeDay').checked?'block':'none';}
+
+async function submitOrder(e){e.preventDefault();const wd=$('oWholeDay').checked;const s1=$('oSvc1').value;const s2=$('oSvc2').value;const order={name:$('oName').value,phone:$('oPhone').value,type:$('oType').value==='cook'?'Готовлю':'Ищу',dishes:$('oDishes').value,service:s1+(wd&&s2?' + '+s2:''),comment:$('oComment').value,wholeDay:wd,date:new Date().toLocaleString('ru-RU')};await dbPost('/orders',order);loadOrders();document.querySelector('#order form').reset();$('svc2Wrap').style.display='none';cart=[];saveCart();updateCartUI();selectedSvc=null;renderServices();toast('✅ Предложение опубликовано!');$('orders').scrollIntoView({behavior:'smooth'});}
+
+function renderOrders(){
+  const l=$('ordersList');
+  if(!orders.length){l.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><div style="font-size:2.5rem;margin-bottom:12px">📭</div><p>Пока нет предложений. Будь первым!</p></div>';return;}
+  l.innerHTML=orders.map(o=>`<div class="order-card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h4>${o.type} — ${o.name} ${o.wholeDay?'🌟':''}</h4><span class="status-new">Новое</span></div><p>📞 ${o.phone}</p><p>🎯 ${o.service}</p><p>📝 ${o.comment||'Без комментария'}</p><div class="order-tags">${o.dishes.split(',').map(d=>'<span class="order-tag">'+d.trim()+'</span>').join('')}</div><p style="margin-top:8px;font-size:0.75rem;opacity:0.6">${o.date}</p></div>`).join('');
+}
+
+function openAddDish(){$('addDishModal').classList.add('active');$('dishEmojis').innerHTML=dishEmojis.map(e=>`<button type="button" class="emoji-btn" onclick="setDishEmoji('${e}')">${e}</button>`).join('');$('dCat').innerHTML=categories.filter(c=>c.key!=='all').map(c=>`<option value="${c.key}">${c.label}</option>`).join('');}
+function closeAddDish(){$('addDishModal').classList.remove('active')}
+function setDishEmoji(e){$('dIcon').value=e;document.querySelectorAll('#dishEmojis .emoji-btn').forEach(b=>b.classList.toggle('selected',b.textContent===e));}
+function saveDish(e){e.preventDefault();const d={id:Date.now(),name:$('dName').value,desc:$('dDesc').value,category:$('dCat').value,icon:$('dIcon').value||'🍽️'};customDishes.push(d);localStorage.setItem('yedlok_custom_dishes',JSON.stringify(customDishes));dishes.push(d);renderMenu('all');closeAddDish();toast('Блюдо добавлено!');}
+
+function openAddService(){$('addServiceModal').classList.add('active');$('svcEmojis').innerHTML=svcEmojis.map(e=>`<button type="button" class="emoji-btn" onclick="setSvcEmoji('${e}')">${e}</button>`).join('');}
+function closeAddService(){$('addServiceModal').classList.remove('active')}
+function setSvcEmoji(e){$('sIcon').value=e;document.querySelectorAll('#svcEmojis .emoji-btn').forEach(b=>b.classList.toggle('selected',b.textContent===e));}
+function saveService(e){e.preventDefault();const s={id:'c'+Date.now(),name:$('sName').value,desc:$('sDesc').value,value:$('sValue').value,icon:$('sIcon').value||'✨'};customServices.push(s);localStorage.setItem('yedlok_custom_services',JSON.stringify(customServices));services.push(s);renderServices();closeAddService();toast('Услуга добавлена!');}
+
+function switchBoard(type,btn){activeBoard=type;document.querySelectorAll('#board .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderBoard();}
+function renderBoard(){
+  const l=$('boardList');const filtered=listings.filter(x=>x.type===activeBoard);
+  if(!filtered.length){l.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted)"><p>Пока нет предложений</p></div>';return;}
+  l.innerHTML=filtered.map(i=>`<div class="board-card"><h4>${i.title}</h4><div class="meta">👤 ${i.author} · 📞 ${i.contact}</div><p>${i.description}</p><button class="btn btn-secondary" style="font-size:0.85rem;padding:8px 16px" onclick="openReply(${i.id})">💬 Ответить (${(i.replies||[]).length})</button>${(i.replies||[]).length?`<div class="replies">${i.replies.map(r=>`<div class="reply"><strong>👤 ${r.author}</strong> · <span style="font-size:0.75rem;color:var(--muted)">${r.date}</span><p style="margin-top:4px">${r.message}</p></div>`).join('')}</div>`:''}</div>`).join('');
+}
+function openAddListing(){$('addListingModal').classList.add('active')}
+function closeAddListing(){$('addListingModal').classList.remove('active')}
+async function saveListing(e){e.preventDefault();const l={type:activeBoard,title:$('lTitle').value,description:$('lDesc').value,author:$('lAuthor').value,contact:$('lContact').value,date:new Date().toLocaleString('ru-RU'),replies:[]};await dbPost('/listings',l);loadListings();closeAddListing();toast('Предложение добавлено!');}
+function openReply(id){replyToId=id;$('replyModal').classList.add('active')}
+function closeReply(){$('replyModal').classList.remove('active')}
+async function saveReply(e){e.preventDefault();const item=listings.find(x=>x.id==replyToId);if(item){const reps=[...(item.replies||[]),{author:$('rAuthor').value,message:$('rMsg').value,date:new Date().toLocaleString('ru-RU')}];await dbPatch('/listings/'+replyToId,{replies:reps});loadListings();}closeReply();toast('Ответ отправлен!');}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  renderTabs();renderMenu('all');renderServices();loadOrders();loadListings();updateCartUI();updateUserUI();
+});
+</script>
+</body>
 </html>
