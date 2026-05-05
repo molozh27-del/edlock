@@ -272,7 +272,8 @@ footer p{font-size:0.85rem}
 <div class="modal-overlay" id="addListingModal" onclick="if(event.target===this)closeAddListing()"><div class="modal"><div class="modal-header"><h2>➕ Добавить предложение</h2><button class="modal-close" onclick="closeAddListing()">✕</button></div><div class="modal-body"><form onsubmit="saveListing(event)"><div class="form-group"><label>Заголовок</label><input id="lTitle" required></div><div class="form-group"><label>Описание</label><textarea id="lDesc" required></textarea></div><div class="form-group"><label>Твоё имя</label><input id="lAuthor" required></div><div class="form-group"><label>Контакт</label><input id="lContact" placeholder="+380..." required></div><button class="btn btn-primary submit-btn">Добавить</button></form></div></div></div>
 <div class="modal-overlay" id="replyModal" onclick="if(event.target===this)closeReply()"><div class="modal"><div class="modal-header"><h2>💬 Ответить на предложение</h2><button class="modal-close" onclick="closeReply()">✕</button></div><div class="modal-body"><form onsubmit="saveReply(event)"><div class="form-group"><label>Твоё имя</label><input id="rAuthor" required></div><div class="form-group"><label>Твой контакт</label><input id="rContact" placeholder="+380..." required></div><div class="form-group"><label>Тип ответа</label><div class="checkbox"><input type="radio" name="rType" value="accept" id="rAccept" checked onchange="toggleReplyType()"><label for="rAccept">✅ Согласен на условия автора</label></div><div class="checkbox"><input type="radio" name="rType" value="counter" id="rCounter" onchange="toggleReplyType()"><label for="rCounter">🔄 Предлагаю встречное (своё блюдо или услугу)</label></div></div><div class="form-group" id="counterWrap" style="display:none"><label>Что ты предлагаешь взамен?</label><textarea id="rCounterOffer" placeholder="Например: Я могу убрать квартиру..."></textarea></div><div class="form-group"><label>Сообщение</label><textarea id="rMsg" placeholder="Например: Я готов обменять! Когда удобно?" required></textarea></div><button class="btn btn-primary submit-btn">Отправить ответ</button></form></div></div></div>
 <div class="modal-overlay" id="authModal" onclick="if(event.target===this)closeAuth()"><div class="modal"><div class="modal-header"><h2>🔑 Вход / Регистрация</h2><button class="modal-close" onclick="closeAuth()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchAuth('login',this)">Вход</button><button class="tab" onclick="switchAuth('register',this)">Регистрация</button></div><form id="loginForm" onsubmit="doLogin(event)"><div class="form-group"><label>Телефон</label><input id="loginPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="loginPass" required></div><button class="btn btn-primary submit-btn">Войти</button></form><form id="regForm" onsubmit="doRegister(event)" style="display:none"><div class="form-group"><label>Имя</label><input id="regName" required></div><div class="form-group"><label>Телефон</label><input id="regPhone" required></div><div class="form-group"><label>Пароль</label><input type="password" id="regPass" required><small style="color:var(--muted);font-size:0.8rem">Минимум 6 символов, заглавная буква и цифра</small></div><button class="btn btn-primary submit-btn">Зарегистрироваться</button></form></div></div></div>
-<div class="modal-overlay" id="friendsModal" onclick="if(event.target===this)closeFriends()"><div class="modal modal-wide"><div class="modal-header"><h2>👥 Мои друзья</h2><button class="modal-close" onclick="closeFriends()">✕</button></div><div class="modal-body"><div class="form-group"><input id="friendSearch" placeholder="🔍 Поиск по имени..." oninput="renderFriends()"></div><div id="friendsList"></div></div></div></div>
+<div class="modal-overlay" id="friendsModal" onclick="if(event.target===this)closeFriends()"><div class="modal modal-wide"><div class="modal-header"><h2>👥 Друзья и предложения</h2><button class="modal-close" onclick="closeFriends()">✕</button></div><div class="modal-body"><div class="tabs"><button class="tab active" onclick="switchFriendTab('friends',this)">👥 Друзья</button><button class="tab" onclick="switchFriendTab('incoming',this)">📩 Входящие <span id="incomingBadge"></span></button><button class="tab" onclick="switchFriendTab('outgoing',this)">📤 Исходящие</button></div><div id="friendTabContent"><div id="friendsPane"><div class="form-group"><input id="friendSearch" placeholder="🔍 Поиск по имени..." oninput="renderFriends()"></div><div id="friendsList"></div></div><div id="incomingPane" style="display:none"></div><div id="outgoingPane" style="display:none"></div></div></div></div></div>
+<div class="modal-overlay" id="sendOfferModal" onclick="if(event.target===this)closeSendOffer()"><div class="modal"><div class="modal-header"><h2>📩 Предложить обмен</h2><button class="modal-close" onclick="closeSendOffer()">✕</button></div><div class="modal-body"><form onsubmit="saveOffer(event)"><div class="form-group"><label>Кому</label><input id="offerToName" readonly style="background:#eee"></div><div class="form-group"><label>Что ты предлагаешь?</label><textarea id="offerWhat" placeholder="Например: Приготовлю домашний борщ с пюре..." required></textarea></div><div class="form-group"><label>Что хочешь получить взамен?</label><textarea id="offerFor" placeholder="Например: Уборка квартиры или помыть посуду..." required></textarea></div><div class="form-group"><label>Твой контакт</label><input id="offerContact" readonly style="background:#eee"></div><button class="btn btn-primary submit-btn">📩 Отправить предложение</button></form></div></div></div>
 <div class="modal-overlay" id="chatModal" onclick="if(event.target===this)closeChat()"><div class="modal modal-wide"><div class="modal-header"><h2 id="chatTitle">💬 Чат</h2><button class="modal-close" onclick="closeChat()">✕</button></div><div class="modal-body"><div class="chat-messages" id="chatMessages"></div><div class="chat-input"><input type="text" id="chatInput" placeholder="Написать сообщение..." onkeypress="if(event.key==='Enter')sendMessage()"><button class="btn btn-primary" onclick="sendMessage()">➤</button></div></div></div></div>
 
 <div class="toast" id="toast"></div>
@@ -332,7 +333,7 @@ async function loadChat(){
   const msgs=data?Object.keys(data).map(k=>({id:k,...data[k]})).sort((a,b)=>(a.timestamp||0)-(b.timestamp||0)):[];
   renderChatMessages(msgs);
 }
-setInterval(()=>{loadOrders();loadListings();if(activeChatId)loadChat();},2000);
+setInterval(()=>{loadOrders();loadListings();if(activeChatId)loadChat();if(user)loadPrivateOffers();},2000);
 
 const dishes=[...defaultDishes,...customDishes];
 const services=[...defaultServices,...customServices];
@@ -431,7 +432,7 @@ function renderBoard(){
     const repArr=Object.keys(reps).map(k=>({id:k,...reps[k]}));
     const hasAccepted=repArr.some(r=>r.status==='accepted');
     const showActions=i.status!=='accepted'&&!hasAccepted;
-    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>${i.title}</h4>${getStatusBadge(i)}</div><div class="meta">👤 ${i.author} · 📞 ${i.contact}</div><p>${i.description}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${showActions?`<button class="btn btn-primary btn-sm" onclick="acceptListing('${i.id}')">✅ Согласиться</button><button class="btn btn-secondary btn-sm" onclick="openReply('${i.id}')">🔄 Контрпредложение</button>`:''}${user&&user.phone!==i.contact?`<button class="btn btn-secondary btn-sm" onclick="addFriendFromListing('${i.contact}','${i.author}')">👥 В друзья</button>`:''}</div>${repArr.length?`<div style="margin-top:10px"><strong style="font-size:0.9rem">Ответы (${repArr.length}):</strong>${repArr.map(r=>`<div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:10px;font-size:0.9rem"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><strong>👤 ${r.author}</strong>${r.status==='accepted'?'<span class="status-accepted" style="font-size:0.7rem">Принято</span>':r.status==='declined'?'<span style="font-size:0.7rem;color:#999">Отклонено</span>':''}</div><div style="font-size:0.8rem;color:var(--muted);margin-bottom:4px">📞 ${r.contact||'-'} · ${r.date}</div>${r.offerType==='counter'?`<div style="background:#fff;padding:6px 10px;border-radius:8px;margin:6px 0;border-left:3px solid var(--orange)"><strong>🔄 Встречное:</strong> ${r.counterOffer||'-'}</div>`:''}<p>${r.message}</p><div style="display:flex;gap:8px;margin-top:8px">${r.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="acceptReply('${i.id}','${r.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declineReply('${i.id}','${r.id}')">❌ Отклонить</button>`:''}</div></div>`).join('')}</div>`:''}</div>`;
+    return`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>${i.title}</h4>${getStatusBadge(i)}</div><div class="meta">👤 ${i.author} · 📞 ${i.contact}</div><p>${i.description}</p><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">${showActions?`<button class="btn btn-primary btn-sm" onclick="acceptListing('${i.id}')">✅ Согласиться</button><button class="btn btn-secondary btn-sm" onclick="openReply('${i.id}')">🔄 Контрпредложение</button>`:''}${user&&user.phone!==i.contact?`<button class="btn btn-secondary btn-sm" onclick="addFriendFromListing('${i.contact}','${i.author}')">👥 В друзья</button><button class="btn btn-secondary btn-sm" onclick="openChat('${i.contact}','${i.author}')">💬 Написать</button>`:''}</div>${repArr.length?`<div style="margin-top:10px"><strong style="font-size:0.9rem">Ответы (${repArr.length}):</strong>${repArr.map(r=>`<div style="margin-top:8px;padding:10px;background:var(--bg);border-radius:10px;font-size:0.9rem"><div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px"><strong>👤 ${r.author}</strong>${r.status==='accepted'?'<span class="status-accepted" style="font-size:0.7rem">Принято</span>':r.status==='declined'?'<span style="font-size:0.7rem;color:#999">Отклонено</span>':''}</div><div style="font-size:0.8rem;color:var(--muted);margin-bottom:4px">📞 ${r.contact||'-'} · ${r.date}</div>${r.offerType==='counter'?`<div style="background:#fff;padding:6px 10px;border-radius:8px;margin:6px 0;border-left:3px solid var(--orange)"><strong>🔄 Встречное:</strong> ${r.counterOffer||'-'}</div>`:''}<p>${r.message}</p><div style="display:flex;gap:8px;margin-top:8px">${r.status==='pending'?`<button class="btn btn-primary btn-sm" onclick="acceptReply('${i.id}','${r.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declineReply('${i.id}','${r.id}')">❌ Отклонить</button>`:''}</div></div>`).join('')}</div>`:''}</div>`;
   }).join('');
 }
 
@@ -448,20 +449,66 @@ async function acceptListing(id){await dbPatch('/listings/'+id,{status:'accepted
 async function acceptReply(listingId,replyId){await dbPatch('/listings/'+listingId+'/replies/'+replyId,{status:'accepted'});await dbPatch('/listings/'+listingId,{status:'accepted'});loadListings();toast('✅ Предложение принято!');}
 async function declineReply(listingId,replyId){await dbPatch('/listings/'+listingId+'/replies/'+replyId,{status:'declined'});loadListings();toast('❌ Предложение отклонено');}
 
-// Friends & Chat
+// Friends, Chat & Private Offers
+let incomingOffers=[];
+let outgoingOffers=[];
+let activeOfferTo=null;
+
 async function addFriendFromListing(phone,name){
   if(!user){toast('Войди, чтобы добавить в друзья');openAuth();return;}
   if(phone===user.phone){toast('Это ты сам!');return;}
   await dbPost('/friends/'+user.phone,{name:name||phone,phone:phone,addedAt:new Date().toLocaleString('ru-RU')});
   toast('👥 Добавлен в друзья!');loadFriends();
 }
-function openFriends(){$('friendsModal').classList.add('active');renderFriends();}
+function openFriends(){$('friendsModal').classList.add('active');renderFriends();loadPrivateOffers();}
 function closeFriends(){$('friendsModal').classList.remove('active')}
+function switchFriendTab(tab,btn){
+  document.querySelectorAll('#friendsModal .tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');
+  $('friendsPane').style.display=tab==='friends'?'block':'none';
+  $('incomingPane').style.display=tab==='incoming'?'block':'none';
+  $('outgoingPane').style.display=tab==='outgoing'?'block':'none';
+  if(tab==='incoming')renderIncomingOffers();
+  if(tab==='outgoing')renderOutgoingOffers();
+}
 function renderFriends(){
   const s=$('friendSearch').value.toLowerCase();
   const f=friends.filter(x=>(x.name||'').toLowerCase().includes(s)||(x.phone||'').includes(s));
-  $('friendsList').innerHTML=f.length?f.map(fr=>`<div class="friend-item" onclick="openChat('${fr.phone}','${fr.name}')"><div class="friend-avatar">${(fr.name||'👤').charAt(0)}</div><div><div style="font-weight:600">${fr.name||fr.phone}</div><div style="font-size:0.8rem;color:var(--muted)">${fr.phone}</div></div></div>`).join(''):'<p style="text-align:center;color:var(--muted)">Пока нет друзей. Добавь из доски предложений!</p>';
+  $('friendsList').innerHTML=f.length?f.map(fr=>`<div class="friend-item"><div class="friend-avatar">${(fr.name||'👤').charAt(0)}</div><div style="flex:1"><div style="font-weight:600">${fr.name||fr.phone}</div><div style="font-size:0.8rem;color:var(--muted)">${fr.phone}</div></div><div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" onclick="openChat('${fr.phone}','${fr.name}')">💬</button><button class="btn btn-secondary btn-sm" onclick="openSendOffer('${fr.phone}','${fr.name}')">📩</button></div></div>`).join(''):'<p style="text-align:center;color:var(--muted)">Пока нет друзей. Добавь из доски предложений!</p>';
 }
+
+async function loadPrivateOffers(){
+  if(!user||!user.phone)return;
+  const inc=await dbGet('/offers/'+user.phone);
+  incomingOffers=inc?Object.keys(inc).map(k=>({id:k,...inc[k]})).reverse():[];
+  const out=await dbGet('/offersFrom/'+user.phone);
+  outgoingOffers=out?Object.keys(out).map(k=>({id:k,...out[k]})).reverse():[];
+  const pendingCount=incomingOffers.filter(o=>o.status==='pending').length;
+  $('incomingBadge').textContent=pendingCount?'('+pendingCount+')':'';
+  if($('incomingPane').style.display!=='none')renderIncomingOffers();
+  if($('outgoingPane').style.display!=='none')renderOutgoingOffers();
+}
+function renderIncomingOffers(){
+  const d=$('incomingPane');
+  if(!incomingOffers.length){d.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px 0">Пока нет входящих предложений</p>';return;}
+  d.innerHTML=incomingOffers.map(o=>`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Предложение от ${o.fromName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':'<span class="status-pending">Новое</span>'}</div><div style="background:var(--bg);padding:10px;border-radius:10px;margin:8px 0"><div><strong>🎁 Предлагает:</strong> ${o.offerWhat}</div><div style="margin-top:4px"><strong>🎯 Хочет:</strong> ${o.offerFor}</div></div><p style="font-size:0.85rem;color:var(--muted)">📞 ${o.from} · ${o.date}</p>${o.status==='pending'?`<div style="display:flex;gap:8px"><button class="btn btn-primary btn-sm" onclick="acceptPrivateOffer('${o.id}')">✅ Принять</button><button class="btn btn-secondary btn-sm" onclick="declinePrivateOffer('${o.id}')">❌ Отклонить</button></div>`:''}</div>`).join('');
+}
+function renderOutgoingOffers(){
+  const d=$('outgoingPane');
+  if(!outgoingOffers.length){d.innerHTML='<p style="text-align:center;color:var(--muted);padding:20px 0">Пока нет исходящих предложений</p>';return;}
+  d.innerHTML=outgoingOffers.map(o=>`<div class="board-card"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><h4>📩 Для ${o.toName}</h4>${o.status==='accepted'?'<span class="status-accepted">Принято</span>':o.status==='declined'?'<span style="font-size:0.75rem;color:#999">Отклонено</span>':'<span class="status-pending">Ожидает</span>'}</div><div style="background:var(--bg);padding:10px;border-radius:10px;margin:8px 0"><div><strong>🎁 Ты предлагаешь:</strong> ${o.offerWhat}</div><div style="margin-top:4px"><strong>🎯 Хочешь:</strong> ${o.offerFor}</div></div><p style="font-size:0.85rem;color:var(--muted)">${o.date}</p></div>`).join('');
+}
+function openSendOffer(phone,name){
+  if(!user){toast('Войди, чтобы отправить');openAuth();return;}
+  activeOfferTo=phone;
+  $('offerToName').value=name||phone;
+  $('offerContact').value=user.phone;
+  $('sendOfferModal').classList.add('active');
+}
+function closeSendOffer(){$('sendOfferModal').classList.remove('active');activeOfferTo=null;}
+async function saveOffer(e){e.preventDefault();if(!activeOfferTo||!user)return;const o={from:user.phone,fromName:user.name,to:activeOfferTo,toName:$('offerToName').value,offerWhat:$('offerWhat').value,offerFor:$('offerFor').value,status:'pending',date:new Date().toLocaleString('ru-RU')};await dbPost('/offers/'+activeOfferTo,o);await dbPost('/offersFrom/'+user.phone,o);closeSendOffer();document.querySelector('#sendOfferModal form').reset();toast('📩 Предложение отправлено!');loadPrivateOffers();}
+async function acceptPrivateOffer(id){const o=incomingOffers.find(x=>x.id===id);if(!o)return;await dbPatch('/offers/'+user.phone+'/'+id,{status:'accepted'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'accepted'});loadPrivateOffers();toast('✅ Предложение принято!');}
+async function declinePrivateOffer(id){const o=incomingOffers.find(x=>x.id===id);if(!o)return;await dbPatch('/offers/'+user.phone+'/'+id,{status:'declined'});await dbPatch('/offersFrom/'+o.from+'/'+id,{status:'declined'});loadPrivateOffers();toast('❌ Предложение отклонено');}
+
 function chatId(a,b){const p=[a,b].sort();return p[0]+'_'+p[1];}
 function openChat(phone,name){
   if(!user){toast('Войди, чтобы написать');openAuth();return;}
@@ -484,7 +531,7 @@ async function sendMessage(){
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
-  renderTabs();renderMenu('all');renderServices();loadOrders();loadListings();updateCartUI();updateUserUI();if(user)loadFriends();
+  renderTabs();renderMenu('all');renderServices();loadOrders();loadListings();updateCartUI();updateUserUI();if(user){loadFriends();loadPrivateOffers();}
 });
 </script>
 </body>
